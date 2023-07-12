@@ -1,0 +1,23 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>STUDENT</title>
+</head>
+<body>
+<hr>
+<a th:href="@{|student?index=${n - 1}|}">PRE</a>
+[~[[${n + 1}]]/4~]
+<a th:href="@{|student?index=${n + 1}|}">NEXT</a>
+<ul>
+    <li>NAME: [[${sv.name}]]</li>
+    <li>GENDER: [[${sv.gender?'Male':'Female'}]]</li>
+    <li>EMAIL: [[${sv.email}]]</li>
+    <li>MARKS: [[${sv.marks}]]</li>
+    <li>RESULT: [[${sv.marks > 5 ? 'Pass' : 'Fail'}]]</li>
+</ul>
+</body>
+</html>

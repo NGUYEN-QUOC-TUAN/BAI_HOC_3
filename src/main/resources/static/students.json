@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Nguyễn Quốc Tuấn",
+    "gender": true,
+    "marks": 9.2,
+    "email": "tuannq@gmail.com"
+  },
+  {
+    "name": "Ngô Bá Ngọc",
+    "gender": false,
+    "marks": 7.2,
+    "email": "ngocnb@gmail.com"
+  },
+  {
+    "name": "Hoàng Tiến Đạt",
+    "gender": true,
+    "marks": 8.2,
+    "email": "datht@gmail.com"
+  },
+  {
+    "name": "Hoàng Thị Thanh Tâm",
+    "gender": false,
+    "marks": 3.2,
+    "email": "tamhtt@gmail.com"
+  }
+]

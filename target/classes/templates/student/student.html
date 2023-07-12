@@ -1,0 +1,41 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>STUDENT</title>
+</head>
+<body>
+ <h3> THYMELEAF FLOW CONTROL ATTRIBUTES</h3>
+    <ul>
+        <li th:each="sinhVien, state:${listStudents}">
+            <a th:href="@{|/student/list?index=${state.index}|}">[[${sinhVien.name}]]</a>
+        </li>
+    </ul>
+ <h3>STUDENT DETAIL</h3>
+
+<ul th:object="${sv}">
+    <li><i>NAME:</i> <b th:text="*{name}"></b></li>
+    <li><i>MARKS:</i> <b th:text="*{marks}"></b></li>
+    <li><i>GENDER:</i> <b th:text="*{gender}?'Male':'Female'"></b></li>
+    <li><i>CONTACT:</i> <b th:text="*{contact.email}"></b></li>
+    <li><i>EMAIL:</i> <b th:text="${name}"></b></li>
+    <li><i>SUBJECT:</i>
+        <ul>
+            <li th:each="subject: *{subjects}">
+                <b th:text="${subject}"></b>
+            </li>
+        </ul>
+    </li>
+    <li th:switch="*{#arrays.length(subjects)}">
+        <i>TIME: </i>
+        <b th:case="1">MỚI VÀO</b>
+        <b th:case="2">ĐANG HỌC</b>
+        <b th:case="*">SẮP RA TRƯỜNG</b>
+    </li>
+    <li th:if="*{marks} > 8"><i>TITLE<b>GOLDEN BEE</b></i></li>
+</ul>
+</body>
+</html>

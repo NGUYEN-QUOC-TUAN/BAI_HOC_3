@@ -1,0 +1,200 @@
+From 8b79e0475abb8339630f72d3a627e9c6f9020a92 Mon Sep 17 00:00:00 2001
+From: NGUYEN-QUOC-TUAN <fakerphong@gmail.com>
+Date: Sat, 8 Jul 2023 22:58:14 +0700
+Subject: [PATCH] NGAY MOI
+
+---
+ .../controller/OperatorController.java        | 14 ++++++++
+ .../controller/SinhVienController.java        | 33 +++++++++++++++++++
+ .../example/bai_hoc_2/entity/Students.java    | 21 ++++++++++++
+ src/main/resources/static/students.json       | 26 +++++++++++++++
+ src/main/resources/templates/operator.html    | 21 ++++++++++++
+ .../resources/templates/scope/student.html    | 23 +++++++++++++
+ 6 files changed, 138 insertions(+)
+ create mode 100644 src/main/java/com/example/bai_hoc_2/controller/OperatorController.java
+ create mode 100644 src/main/java/com/example/bai_hoc_2/controller/SinhVienController.java
+ create mode 100644 src/main/java/com/example/bai_hoc_2/entity/Students.java
+ create mode 100644 src/main/resources/static/students.json
+ create mode 100644 src/main/resources/templates/operator.html
+ create mode 100644 src/main/resources/templates/scope/student.html
+
+diff --git a/src/main/java/com/example/bai_hoc_2/controller/OperatorController.java b/src/main/java/com/example/bai_hoc_2/controller/OperatorController.java
+new file mode 100644
+index 0000000..0a0cacd
+--- /dev/null
++++ b/src/main/java/com/example/bai_hoc_2/controller/OperatorController.java
+@@ -0,0 +1,14 @@
++package com.example.bai_hoc_2.controller;
++
++import org.springframework.stereotype.Controller;
++import org.springframework.ui.Model;
++import org.springframework.web.bind.annotation.RequestMapping;
++@Controller
++public class OperatorController {
++    @RequestMapping("/demo/operato")
++    public String demo(Model model) {
++        model.addAttribute("x", 5);
++        model.addAttribute("y", 7);
++        return "operator";
++    }
++}
+diff --git a/src/main/java/com/example/bai_hoc_2/controller/SinhVienController.java b/src/main/java/com/example/bai_hoc_2/controller/SinhVienController.java
+new file mode 100644
+index 0000000..77de8c2
+--- /dev/null
++++ b/src/main/java/com/example/bai_hoc_2/controller/SinhVienController.java
+@@ -0,0 +1,33 @@
++package com.example.bai_hoc_2.controller;
++
++import com.example.bai_hoc_2.entity.Students;
++import com.fasterxml.jackson.core.type.TypeReference;
++import com.fasterxml.jackson.databind.ObjectMapper;
++import org.springframework.stereotype.Controller;
++import org.springframework.ui.Model;
++import org.springframework.util.ResourceUtils;
++import org.springframework.web.bind.annotation.RequestMapping;
++import org.springframework.web.bind.annotation.RequestParam;
++
++import java.io.File;
++import java.io.FileNotFoundException;
++import java.io.IOException;
++import java.util.List;
++import java.util.Optional;
++
++@Controller
++public class SinhVienController {
++    @RequestMapping("/student")
++    public String index(Model model, @RequestParam("index") Optional<Integer> index) throws IOException {
++
++        ObjectMapper mapper = new ObjectMapper();
++        File path = ResourceUtils.getFile("D:\\JAVA_FPOLY_TUANNQPH20022\\LAP_TRINH_JAVA_6\\BAI_HOC\\BAI_HOC_2\\src\\main\\resources\\static\\students.json");
++        TypeReference<List<Students>> typeref = new TypeReference<>() {
++        };
++        List<Students> students = mapper.readValue(path, typeref);
++        int i = index.orElse(0);
++        model.addAttribute("n", i);
++        model.addAttribute("sv", students.get(i));
++        return "scope/student";
++    }
++}
+diff --git a/src/main/java/com/example/bai_hoc_2/entity/Students.java b/src/main/java/com/example/bai_hoc_2/entity/Students.java
+new file mode 100644
+index 0000000..a6ac3a6
+--- /dev/null
++++ b/src/main/java/com/example/bai_hoc_2/entity/Students.java
+@@ -0,0 +1,21 @@
++package com.example.bai_hoc_2.entity;
++
++import lombok.AllArgsConstructor;
++import lombok.Builder;
++import lombok.Getter;
++import lombok.NoArgsConstructor;
++import lombok.Setter;
++import lombok.ToString;
++
++@AllArgsConstructor
++@NoArgsConstructor
++@Getter
++@Setter
++@Builder
++@ToString
++public class Students {
++    private String name;
++    private Boolean gender;
++    private String email;
++    private Float marks;
++}
+diff --git a/src/main/resources/static/students.json b/src/main/resources/static/students.json
+new file mode 100644
+index 0000000..a0b1473
+--- /dev/null
++++ b/src/main/resources/static/students.json
+@@ -0,0 +1,26 @@
++[
++  {
++    "name": "Nguyễn Quốc Tuấn",
++    "gender": true,
++    "marks": 9.2,
++    "email": "tuannq@gmail.com"
++  },
++  {
++    "name": "Ngô Bá Ngọc",
++    "gender": false,
++    "marks": 7.2,
++    "email": "ngocnb@gmail.com"
++  },
++  {
++    "name": "Hoàng Tiến Đạt",
++    "gender": true,
++    "marks": 8.2,
++    "email": "datht@gmail.com"
++  },
++  {
++    "name": "Hoàng Thị Thanh Tâm",
++    "gender": false,
++    "marks": 3.2,
++    "email": "tamhtt@gmail.com"
++  }
++]
+\ No newline at end of file
+diff --git a/src/main/resources/templates/operator.html b/src/main/resources/templates/operator.html
+new file mode 100644
+index 0000000..6bf26ed
+--- /dev/null
++++ b/src/main/resources/templates/operator.html
+@@ -0,0 +1,21 @@
++<!doctype html>
++<html xmlns:th="http://www.thymeleaf.org">
++<head>
++  <meta charset="UTF-8">
++  <meta name="viewport"
++        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
++  <meta http-equiv="X-UA-Compatible" content="ie=edge">
++  <title>THYMELEAF OPERATORS</title>
++</head>
++<body>
++<hr>
++<ul>
++  <li th:text="${x + y}"></li>
++  <li th:text="${x % y}"></li>
++  <li th:text="not${x > y}"></li>
++  <li th:text="${x gt y} and ${x == y}"></li>
++  <li th:text="${x > y}?'OK' : 'CANCEL'"></li>
++  <li th:text="'/a/b/' + ${x} +'/'+${y}"></li>
++</ul>
++</body>
++</html>
+\ No newline at end of file
+diff --git a/src/main/resources/templates/scope/student.html b/src/main/resources/templates/scope/student.html
+new file mode 100644
+index 0000000..95b66ad
+--- /dev/null
++++ b/src/main/resources/templates/scope/student.html
+@@ -0,0 +1,23 @@
++<!doctype html>
++<html xmlns:th="http://www.thymeleaf.org">
++<head>
++    <meta charset="UTF-8">
++    <meta name="viewport"
++          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
++    <meta http-equiv="X-UA-Compatible" content="ie=edge">
++    <title>STUDENT</title>
++</head>
++<body>
++<hr>
++<a th:href="@{|student?index=${n - 1}|}">PRE</a>
++[~[[${n + 1}]]/4~]
++<a th:href="@{|student?index=${n + 1}|}">NEXT</a>
++<ul>
++    <li>NAME: [[${sv.name}]]</li>
++    <li>GENDER: [[${sv.gender?'Male':'Female'}]]</li>
++    <li>EMAIL: [[${sv.email}]]</li>
++    <li>MARKS: [[${sv.marks}]]</li>
++    <li>RESULT: [[${sv.marks > 5 ? 'Pass' : 'Fail'}]]</li>
++</ul>
++</body>
++</html>
+\ No newline at end of file
+-- 
+2.38.1.windows.1
+
